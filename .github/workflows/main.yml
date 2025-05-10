@@ -36,7 +36,7 @@ jobs:
         run: | 
           npm run tern-on-api &
           sleep 2
-          newman run store.collection.json -r htmlextra --reporter-htmlextra-export ./testsResults/index.html
+          newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra
           kill -9 `lsof -i:5000 -t` 
      
       # Upload the contents of Test Results directory to workspace
