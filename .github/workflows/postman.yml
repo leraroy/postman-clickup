@@ -1,17 +1,49 @@
-name: Automated API tests using Postman CLI
+name: Newman extra-html-report deploy to github page 
 
 on: push
 
 jobs:
-  automated-api-tests:
+  automated-test-api:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Postman CLI
+      - name: Create dir
         run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      - name: Run API tests
+          mkdir -p testResults
+
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+        
+      - name: Install newman
         run: |
-          postman collection run "14936700-d48305dc-9ed8-4984-84a9-e10ccdf7557c" -e "14936700-a3e46b87-1ad2-46c7-b484-5eba7d8cc22d"
+          npm install -g newman
+          npm install -g newman-reporter-htmlextra
+
+      - name: Run tests
+        run: |
+          newman run "HW4.postman_collection.json" -e "ClickUpHW.postman_environment.json" -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+
+      - name: Output the results
+        uses: actions/upload-artifact@v3
+        with:
+          name: Reporter
+          path: testResults
+
+      - name: Test marketplace action
+        uses: PavanMudigonda/html-reporter-github-pages@v1.0
+        id: test-report
+        with:
+          test_results: testResults
+          gh_pages: gh-pages
+          results_history: results-history
+
+      - name: Publish Github Pages
+        if: ${{ always() }}
+        uses: peaceiris/actions-gh-pages@v3.8.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: results-history
+          keep_files: true 
