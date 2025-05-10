@@ -31,13 +31,13 @@ jobs:
           name: Reporter
           path: testResults
 
-      - name: Get history
-        uses: actions/checkout@v2
-        if: always()
-        continue-on-error: true
+      - name: Test marketplace action
+        uses: PavanMudigonda/html-reporter-github-pages@v1.4
+        id: test-report
         with:
-          ref: gh-pages
-          path: gh-pages
+          test_results: testResults
+          gh_pages: gh-pages
+          results_history: results-history
 
       - name: Publish Github Pages
         if: ${{ always() }}
