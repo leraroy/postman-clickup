@@ -1,5 +1,5 @@
 # Postman-tests
-This repo contains [clickup](https://app.clickup.com/?fromLanding=true) postman collections with enviroment
+This repo contains [clickup](https://app.clickup.com/?fromLanding=true) postman collections with environment
 
 ### How to run the tests on windows
 Go to the terminal and install newman execute "npm install -g newman" command 
