@@ -26,8 +26,8 @@ jobs:
       - name: Make Directory for results
         run: mkdir -p testsResults
         
-      - name: Install dependencies
-        run: npm install  
+      # - name: Install dependencies
+      #   run: npm install  
 
       # Run the POSTMAN collection
       - name: Run POSTMAN collection
@@ -50,7 +50,7 @@ jobs:
       - name: Deploy report to Github Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v4
-        env:
+        with:
           PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLISH_BRANCH: gh-pages
           PUBLISH_DIR: ./testsResults   
