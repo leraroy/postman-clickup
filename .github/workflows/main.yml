@@ -8,13 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       # INstall Node on the runner
       - name: Install Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
      
       # Install the newman command line utility and also install the html extra reporter
       - name: Install newman
@@ -34,10 +34,7 @@ jobs:
         if: always()
         continue-on-error: true
         run: | 
-          npm run tern-on-api &
-          sleep 2
           newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra
-          kill -9 `lsof -i:5000 -t` 
      
       # Upload the contents of Test Results directory to workspace
       - name: Output the run Details
