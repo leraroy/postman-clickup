@@ -6,9 +6,9 @@ Go to the terminal and install newman execute "npm install -g newman" command Th
 
 Run the " newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json" command for run test colllection
 Newman also supports reporters. 
-For instance, to use the Newman HTMLExtra Reporter go to the terminal execute 
+For instance, to use the Newman HTMLExtra Reporter go to the terminal execute "npm install -g newman-reporter-htmlextra"
 ```
-npm install -g newman-reporter-htmlextra" and run "newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra
+newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra
 ```
 To see reports without installation
 Go to this link to see [newman report](https://leraroy.github.io/postman-clickup/) for collection
