@@ -25,25 +25,11 @@ jobs:
         run: |
           newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
 
-      # - name: Output the results
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: Reporter
-      #     path: testResults
-
-      # - name: Test marketplace action
-      #   uses: PavanMudigonda/html-reporter-github-pages@v1.4
-      #   id: test-report
-      #   with:
-      #     test_results: testResults
-      #     gh_pages: gh-pages
-      #     results_history: results-history
-
       - name: Publish Github Pages
         if: ${{ always() }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: results-history
+          publish_dir: testResults
           keep_files: true 
