@@ -1,0 +1,1103 @@
+{
+	"info": {
+		"_postman_id": "d48305dc-9ed8-4984-84a9-e10ccdf7557c",
+		"name": "HW4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14936700"
+	},
+	"item": [
+		{
+			"name": "Get lists",
+			"item": [
+				{
+					"name": "Get lists / Create list 1",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var name = pm.variables.replaceIn(\"postman_{{$randomCity}}\")\r",
+									"console.log(\"name \" + name)\r",
+									"pm.collectionVariables.set(\"ListName_1\", name) // Set the environment variable \"name\" to the random first name generated."
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var expected_name = pm.collectionVariables.get(\"ListName_1\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check list ${expected_name} is created`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"var id = jsonData.id; // Assuming the ID is returned in the response\r",
+									"pm.collectionVariables.set(\"list_id_1\", id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{ListName_1}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folder_id}}/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folder_id}}",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get lists / Create list 2",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var name = pm.variables.replaceIn(\"postman_{{$randomCity}}\")\r",
+									"console.log(\"name \" + name)\r",
+									"pm.collectionVariables.set(\"ListName_2\", name) // Set the environment variable \"name\" to the random first name generated.\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var expected_name = pm.collectionVariables.get(\"ListName_2\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check list ${expected_name} is created`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"var id = jsonData.id; // Assuming the ID is returned in the response\r",
+									"pm.collectionVariables.set(\"list_id_2\", id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{ListName_2}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folder_id}}/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folder_id}}",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get lists / Get lists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var lists = pm.response.json().lists;\r",
+									"var list_name_1 = pm.collectionVariables.get(\"ListName_1\");\r",
+									"var list_name_2 = pm.collectionVariables.get(\"ListName_2\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var bool = false;\r",
+									"pm.test(`Check if the response body contains the correct list ${list_name_1}`, function () {\r",
+									"    lists.forEach(list => {\r",
+									"        if ( list.name === list_name_1) {\r",
+									"            bool=true\r",
+									"    }\r",
+									"})\r",
+									"pm.expect(bool).to.eql(true);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check if the response body contains the correct list ${list_name_2}`, function () {\r",
+									"    list = lists.pop();\r",
+									"    pm.expect(list.name).to.eql(list_name_2);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folder_id}}/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folder_id}}",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get lists / Delete list 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id_1}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id_1}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get lists / Delete list 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id_2}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id_2}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create list",
+			"item": [
+				{
+					"name": "Create list / Create list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var name = pm.variables.replaceIn(\"postman_{{$randomCity}}\")\r",
+									"console.log(\"name \" + name)\r",
+									"pm.collectionVariables.set(\"list_name\", name) // Set the environment variable \"name\" to the random first name generated."
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check ${expected_name} list is created`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"var id = jsonData.id; // Assuming the ID is returned in the response\r",
+									"pm.collectionVariables.set(\"list_id\", id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{list_name}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folder_id}}/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folder_id}}",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create list / Get list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var expected_id = pm.collectionVariables.get(\"list_id\");\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check id is correct`, function () {\r",
+									"    pm.expect(jsonData.id).to.eql(expected_id);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check  ${expected_name} list exists`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create list / Delete list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get list",
+			"item": [
+				{
+					"name": "Get list / Create list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var name = pm.variables.replaceIn(\"postman_{{$randomCity}}\")\r",
+									"console.log(\"name \" + name)\r",
+									"pm.collectionVariables.set(\"list_name\", name) // Set the environment variable \"name\" to the random first name generated."
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check ${expected_name} list is created`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"var id = jsonData.id; // Assuming the ID is returned in the response\r",
+									"pm.collectionVariables.set(\"list_id\", id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{list_name}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folder_id}}/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folder_id}}",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list / Get list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var expected_id = pm.collectionVariables.get(\"list_id\");\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check id is correct`, function () {\r",
+									"    pm.expect(jsonData.id).to.eql(expected_id);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check ${expected_name} list exists`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list/ Delete list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update list",
+			"item": [
+				{
+					"name": "Update list / Create list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var name = pm.variables.replaceIn(\"postman_{{$randomCity}}\")\r",
+									"console.log(\"name \" + name)\r",
+									"pm.collectionVariables.set(\"list_name\", name) // Set the environment variable \"name\" to the random first name generated."
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check ${expected_name} list is created`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"var id = jsonData.id; // Assuming the ID is returned in the response\r",
+									"pm.collectionVariables.set(\"list_id\", id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{list_name}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folder_id}}/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folder_id}}",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update list / Update list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var name = pm.collectionVariables.replaceIn(\"postman_{{$randomCity}}\")\r",
+									"pm.collectionVariables.set(\"list_name\", name)\r",
+									"\r",
+									"var status = pm.collectionVariables.replaceIn(\"{{$randomColor}}\")\r",
+									"pm.collectionVariables.set(\"status_list\", status)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"var expected_status = pm.collectionVariables.get(\"status_list\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check if the name ${expected_name}  is in the list`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check if the status ${expected_status}  is in the list`, function () {\r",
+									"    pm.expect(jsonData.status.status).to.eql(expected_status);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{list_name}}\",\r\n    \"status\": \"{{status_list}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update list / Get list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var expected_id = pm.collectionVariables.get(\"list_id\");\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check id is correct`, function () {\r",
+									"    pm.expect(jsonData.id).to.eql(expected_id);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check ${expected_name} list exists`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update list / Delete list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete list",
+			"item": [
+				{
+					"name": "Delete list / Create list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var name = pm.variables.replaceIn(\"postman_{{$randomCity}}\")\r",
+									"console.log(\"name \" + name)\r",
+									"pm.collectionVariables.set(\"list_name\", name) // Set the environment variable \"name\" to the random first name generated."
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(`Check ${expected_name} list is created`, function () {\r",
+									"    pm.expect(jsonData.name).to.eql(expected_name);\r",
+									"});\r",
+									"\r",
+									"var id = jsonData.id; // Assuming the ID is returned in the response\r",
+									"pm.collectionVariables.set(\"list_id\", id);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{list_name}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folder_id}}/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folder_id}}",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete list / Delete list",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 800ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(800);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/list/{{list_id}}",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"list",
+								"{{list_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete list / Get lists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var list_id = pm.collectionVariables.get(\"list_id\");\r",
+									"var expected_name = pm.collectionVariables.get(\"list_name\");\r",
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"var bool = false;\r",
+									"pm.test(`Check that the list doesn't contain a ${expected_name} list`, function () {\r",
+									"    jsonData.lists.forEach(list => {\r",
+									"        if ( list.name === expected_name) {\r",
+									"            bool=true\r",
+									"    }\r",
+									"})\r",
+									"pm.expect(bool).to.eql(false);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseURL}}/folder/{{folder_id}}/list",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"folder",
+								"{{folder_id}}",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{authorization}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "folder_id",
+			"value": "90156799516",
+			"type": "string"
+		},
+		{
+			"key": "ListName_1",
+			"value": ""
+		},
+		{
+			"key": "list_id_1",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "ListName_2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "list_id_2",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "list_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "list_name",
+			"value": ""
+		},
+		{
+			"key": "status_list",
+			"value": ""
+		}
+	]
+}
