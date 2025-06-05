@@ -23,7 +23,6 @@ jobs:
 
       - name: Run tests
         run: |
-#          mkdir -p testResults
           newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
 
 #      - name: Move report
