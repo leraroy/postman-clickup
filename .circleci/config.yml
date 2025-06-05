@@ -17,10 +17,10 @@ jobs:
       - run:
           name: Run Newman tests
           command: |
-            newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+            newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResult/htmlreport.html
       - store_artifacts:
           path: target/testHtmldev.html
           destination: reports/
       - store_artifacts:
           path: target/testJsondev.json
-          destination: test-results/
+          destination: test-result/
