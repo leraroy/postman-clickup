@@ -2,16 +2,18 @@ version: 2
 jobs:
   build:
     docker:
-      - image: cimg/node:22.16.0
+      - image: cimg/node:18.20.8
     steps:
       - checkout
       - run:
           name: Install Dependencies
           command: |
-            npm install -g npm@11.4.1
             npm install -g newman
             npm install -g newman-reporter-htmlextra
-            npm install
+#            npm install -g npm@11.4.1
+#            npm install -g newman
+#            npm install -g newman-reporter-htmlextra
+#            npm install
       - run:
           name: Run Newman tests
           command: |
