@@ -23,8 +23,8 @@ jobs:
 
       - name: Run tests
         run: |
-          mkdir -p testResults
-          newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+#          mkdir -p testResults
+          newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export result/htmlreport.html
 
 #      - name: Move report
 #        run: |
@@ -37,7 +37,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: testResults
+          publish_dir: result
           keep_files: true
 
 
