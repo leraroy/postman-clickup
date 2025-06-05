@@ -1,0 +1,23 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: |
+            sudo npm install -g newman
+            sudo npm install -g newman-reporter-htmlextra
+            npm install
+      - run:
+          name: Run Newman tests
+          command: |
+            newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+      - store_artifacts:
+          path: target/testHtmldev.html
+          destination: reports/
+      - store_artifacts:
+          path: target/testJsondev.json
+          destination: test-results/
