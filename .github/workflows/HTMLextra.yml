@@ -1,51 +1,51 @@
-name: Newman extra-html-report deploy to github page 
-
-on: push
-
-jobs:
-  automated-test-api:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Create dir
-        run: |
-          mkdir -p testResults
-
-      - name: Install Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-        
-      - name: Install newman
-        run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
-
-      - name: Run tests
-        run: |
-          mkdir -p testResults
-          newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
-      
-      - name: Move report
-        run: |
-          mkdir -p results-history
-          mv testResults/htmlreport.html results-history/index.html
-
-      - name: Publish Github Pages
-        if: ${{ always() }}
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: results-history
-          keep_files: true
-
-
-      # - name: Publish Github Pages
-      #   if: always()
-      #   uses: peaceiris/actions-gh-pages@v4
-      #   with:
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     publish_branch: gh-pages
-      #     publish_dir: testResults
-      #     keep_files: true 
+#name: Newman extra-html-report deploy to github page
+#
+#on: push
+#
+#jobs:
+#  automated-test-api:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Create dir
+#        run: |
+#          mkdir -p testResults
+#
+#      - name: Install Node
+#        uses: actions/setup-node@v4
+#        with:
+#          node-version: '18'
+#
+#      - name: Install newman
+#        run: |
+#          npm install -g newman
+#          npm install -g newman-reporter-htmlextra
+#
+#      - name: Run tests
+#        run: |
+#          mkdir -p testResults
+#          newman run HW4.postman_collection.json -e ClickUpHW.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html
+#
+#      - name: Move report
+#        run: |
+#          mkdir -p results-history
+#          mv testResults/htmlreport.html results-history/index.html
+#
+#      - name: Publish Github Pages
+#        if: ${{ always() }}
+#        uses: peaceiris/actions-gh-pages@v4
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_branch: gh-pages
+#          publish_dir: results-history
+#          keep_files: true
+#
+#
+#      # - name: Publish Github Pages
+#      #   if: always()
+#      #   uses: peaceiris/actions-gh-pages@v4
+#      #   with:
+#      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+#      #     publish_branch: gh-pages
+#      #     publish_dir: testResults
+#      #     keep_files: true
